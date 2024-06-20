@@ -4,19 +4,17 @@ using UnityEngine;
 public class ScoreView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private Finish _finish;
-
-    private int _score = 0;
+    [SerializeField] private StateManager _baseController;
 
     private void OnEnable()
     {
-        _finish.Finished += Add;
+        _baseController.ScoreChanged += View;
     }
 
     private void OnDisable()
     {
-        _finish.Finished -= Add;
+        _baseController.ScoreChanged -= View;
     }
 
-    private void Add() => _text.text = (++_score).ToString();
+    private void View(int score) => _text.text = score.ToString();
 }
