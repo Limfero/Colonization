@@ -7,12 +7,9 @@ public class Sender : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Transform _finishPoint;
 
-    public void SendUnit(Queue<PickingObject> targets)
+    public void SendUnit(Resource target)
     {
         Unit unit = _spawner.GetObject(_spawnPoint.position);
-        PickingObject target = targets.Dequeue();
-
-        target.Hold();
 
         unit.Init(target.transform.position, _finishPoint.position);
     }

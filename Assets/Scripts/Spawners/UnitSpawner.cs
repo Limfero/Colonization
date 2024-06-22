@@ -6,7 +6,6 @@ public class UnitSpawner : Spawner<Unit>
     protected override Unit Spawn()
     {
         Unit unit = Instantiate(Prefab.First(), transform.position, Quaternion.identity);
-        unit.SetSpawner(this);
 
         return unit;
     }

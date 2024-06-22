@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent (typeof(Base), typeof(Creator))]
+[RequireComponent (typeof(Base), typeof(BaseCreator))]
 public class StateManager : MonoBehaviour
 {
     [SerializeField] private Finish _finish;
@@ -11,7 +11,7 @@ public class StateManager : MonoBehaviour
     private int _costPerBase = 5;
 
     private Base _base;
-    private Creator _creator;
+    private BaseCreator _creator;
     private State _state = State.CreatingUnits;
 
     public event Action<int> ScoreChanged;
@@ -21,18 +21,18 @@ public class StateManager : MonoBehaviour
         _score = 0;
         ScoreChanged?.Invoke(_score);
         _base = GetComponent<Base>();
-        _creator = GetComponent<Creator>();
+        _creator = GetComponent<BaseCreator>();
     }
 
     private void OnEnable()
     {
-        _finish.Finished += OnFinish;
+        _finish.UnitBack += OnFinish;
         _creator.PositionDefined += SetStateToCreatingBase;
     }
 
     private void OnDisable()
     {
-        _finish.Finished -= OnFinish;
+        _finish.UnitBack -= OnFinish;
         _creator.PositionDefined -= SetStateToCreatingBase;
     }
 

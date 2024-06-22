@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent (typeof(Sender))]
-public class Creator : MonoBehaviour
+public class BaseCreator : MonoBehaviour
 {
     [SerializeField] private UnitBuilder _builder;
     [SerializeField] private Flag _flag;
@@ -23,14 +23,14 @@ public class Creator : MonoBehaviour
 
     private void OnEnable()
     {
-        _flag.Landed += SetBasePosition;
-        _flag.Achieved += CreateBase;
+        _flag.Landed += SetPosition;
+        _flag.Achieved += Create;
     }
 
     private void OnDisable()
     {
-        _flag.Landed -= SetBasePosition;
-        _flag.Achieved -= CreateBase;
+        _flag.Landed -= SetPosition;
+        _flag.Achieved -= Create;
     }
 
     private void OnMouseDown()
@@ -39,7 +39,7 @@ public class Creator : MonoBehaviour
             _flag.Create();
     }
 
-    public void SetBasePosition(Transform transform)
+    public void SetPosition(Transform transform)
     {
         _baseTransform = transform;
         PositionDefined?.Invoke();
@@ -47,7 +47,7 @@ public class Creator : MonoBehaviour
 
     public void SendBuilder() => _sender.SendBuilder(_builder, _baseTransform.position);
 
-    private void CreateBase()
+    private void Create()
     {
         _flag.gameObject.SetActive(false);
         Instantiate(_basePrefab, _baseTransform.position, _baseTransform.rotation);

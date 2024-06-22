@@ -1,13 +1,10 @@
+using System;
 using UnityEngine;
 
 [RequireComponent (typeof(Collider))]
-public class PickingObject : MonoBehaviour
+public class Resource : MonoBehaviour
 {
     private Collider _collider;
-    private Spawner<PickingObject> _spawner;
-    private bool _isBusy = false;
-
-    public bool IsBusy => _isBusy;
 
     private void Awake()
     {
@@ -25,18 +22,7 @@ public class PickingObject : MonoBehaviour
     public void BreakFree()
     {
         transform.SetParent(null);
-        transform.position = _spawner.transform.position;
 
         _collider.enabled = true;
     }
-
-    public void Relese()
-    {
-        _isBusy = false;
-        _spawner.Relese(this);
-    }
-
-    public void Init(Spawner<PickingObject> spawner) => _spawner = spawner;
-
-    public void Hold() => _isBusy = true;
 }

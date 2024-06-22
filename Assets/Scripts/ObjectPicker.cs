@@ -7,7 +7,7 @@ public class ObjectPicker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_unit.IsBusy == false && other.TryGetComponent(out PickingObject @object))
+        if (_unit.IsBusy == false && other.TryGetComponent(out Resource @object))
         {
             @object.PickUp(transform, _hands);
             _unit.Hold();

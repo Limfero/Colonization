@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Finder), typeof(Sender))]
+[RequireComponent(typeof(ResourceFinder), typeof(Sender))]
 public class Base : MonoBehaviour
 {
     [SerializeField] private float _repeatRate;
@@ -11,7 +10,7 @@ public class Base : MonoBehaviour
 
     private int _countUnit;
     
-    private Finder _finder;
+    private ResourceFinder _finder;
     private Sender _sender;
 
     public event Action<int> CountUnitChanged;
@@ -22,10 +21,11 @@ public class Base : MonoBehaviour
 
     private void Awake()
     {
-        _finder = GetComponent<Finder>();
+        _finder = GetComponent<ResourceFinder>();
         _sender = GetComponent<Sender>();
 
         _countUnit = _maxUnit;
+        CountUnitChanged?.Invoke(_countUnit);
     }
 
     private void Start()
@@ -55,9 +55,9 @@ public class Base : MonoBehaviour
 
         while (enabled)
         {
-            if (_finder.TryFind(out Queue<PickingObject> targets) && _countUnit > 0)
+            if (_finder.TryFind(out Resource target) && _countUnit > 0)
             {
-                _sender.SendUnit(targets);
+                _sender.SendUnit(target);
                 CountUnitChanged?.Invoke(--_countUnit);
             }
 

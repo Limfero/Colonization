@@ -625,6 +625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scanningRadius: 500
+  _finish: {fileID: 3091748762224602754}
 --- !u!114 &8921862556007468647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -755,6 +756,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09911120c68dfa347bb143c1dd638d56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _unitSpawner: {fileID: 6216503104015878914}
+  _resourceSpawner: {fileID: 0}
 --- !u!1 &5989391136136680453
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class ResourceSpawner : Spawner<PickingObject>
+public class ResourceSpawner : Spawner<Resource>
 {
     [SerializeField] private Transform[] _spawnPosints;
     [SerializeField] private float _repeatRate = 3f;
@@ -14,10 +14,9 @@ public class ResourceSpawner : Spawner<PickingObject>
         StartCoroutine(Countdown());
     }
 
-    protected override PickingObject Spawn()
+    protected override Resource Spawn()
     {
-        PickingObject @object = Instantiate(Prefab[Random.Range(0, Prefab.Length)], transform.position, Quaternion.identity);
-        @object.Init(this);
+        Resource @object = Instantiate(Prefab[Random.Range(0, Prefab.Length)], transform.position, Quaternion.identity);
 
         return @object;
     }
@@ -30,7 +29,7 @@ public class ResourceSpawner : Spawner<PickingObject>
         {
             Vector3 spawnPoint = _spawnPosints[Random.Range(0, _spawnPosints.Length)].position;
 
-            if(Physics.OverlapSphere(spawnPoint, _checkRadius).Where(hit => hit.TryGetComponent(out PickingObject @object)).ToList().Count == 0)
+            if(Physics.OverlapSphere(spawnPoint, _checkRadius).Where(hit => hit.TryGetComponent(out Resource @object)).ToList().Count == 0)
                 GetObject(spawnPoint);
 
             yield return wait;

@@ -3,23 +3,28 @@ using UnityEngine;
 
 public class Finish : MonoBehaviour
 {
-    public event Action Finished;
+    [SerializeField] private Spawner<Unit> _unitSpawner;
+    [SerializeField] private Spawner<Resource> _resourceSpawner;
+
+    public event Action UnitBack;
+    public event Action<Resource> ResourceCollected;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Unit unit))
+        if (other.TryGetComponent(out Unit unit) && unit.IsBusy == true)
         {
-            PickingObject pickingObject = unit.GetComponentInChildren<PickingObject>();
-
-            if (pickingObject == null)
-                return;
-
-            pickingObject.BreakFree();
-            pickingObject.Relese();
             unit.BreakFree();
-            unit.Relese();
+            _unitSpawner.Relese(unit);
 
-            Finished?.Invoke();
+            UnitBack?.Invoke();
+        }
+
+        if (other.TryGetComponent(out Resource resource))
+        {
+            resource.BreakFree();
+            _resourceSpawner.Relese(resource);
+
+            ResourceCollected?.Invoke(resource);
         }
     }
 }
