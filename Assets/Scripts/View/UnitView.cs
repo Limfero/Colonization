@@ -4,17 +4,17 @@ using UnityEngine;
 public class UnitView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
-    [SerializeField] private Base _base;
+    [SerializeField] private UnitManager _unitManager;
 
     private void OnEnable()
     {
-        _base.CountUnitChanged += Change;
+        _unitManager.CountUnitChanged += Change;
     }
 
     private void OnDisable()
     {
-        _base.CountUnitChanged -= Change;
+        _unitManager.CountUnitChanged -= Change;
     }
 
-    private void Change(int count) => _text.text = $"{count}/{_base.MaxUnit}";
+    private void Change(int count) => _text.text = $"{count}/{_unitManager.MaxUnit}";
 }

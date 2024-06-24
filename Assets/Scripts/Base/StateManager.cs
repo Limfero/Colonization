@@ -1,16 +1,16 @@
 using System;
 using UnityEngine;
 
-[RequireComponent (typeof(Base), typeof(BaseCreator))]
+[RequireComponent (typeof(UnitManager), typeof(BaseCreator))]
 public class StateManager : MonoBehaviour
 {
-    [SerializeField] private Finish _finish;
+    [SerializeField] private FinishZone _finish;
 
     private int _score;
     private int _costPerUnit = 3;
     private int _costPerBase = 5;
 
-    private Base _base;
+    private UnitManager _unitManger;
     private BaseCreator _creator;
     private State _state = State.CreatingUnits;
 
@@ -20,7 +20,7 @@ public class StateManager : MonoBehaviour
     {
         _score = 0;
         ScoreChanged?.Invoke(_score);
-        _base = GetComponent<Base>();
+        _unitManger = GetComponent<UnitManager>();
         _creator = GetComponent<BaseCreator>();
     }
 
@@ -56,7 +56,7 @@ public class StateManager : MonoBehaviour
     {
         if (_score >= _costPerUnit)
         {
-            _base.CreateUnit();
+            _unitManger.Create();
             _score -= _costPerUnit;
             ScoreChanged?.Invoke(_score);
         }
@@ -64,10 +64,9 @@ public class StateManager : MonoBehaviour
 
     private void CreateBase()
     {
-        if (_score >= _costPerBase && _base.CountUnit > 0)
+        if (_score >= _costPerBase && _unitManger.TryDelete())
         {
             _creator.SendBuilder();
-            _base.DeleteUnit();
 
             _score -= _costPerBase;
             ScoreChanged?.Invoke(_score);
@@ -75,11 +74,11 @@ public class StateManager : MonoBehaviour
         }
     }
 
-    private void OnFinish()
+    private void OnFinish(Unit unit)
     {
         _score++;
         ScoreChanged?.Invoke(_score);
-        _base.ReleseUnit();
+        _unitManger.Relese(unit);
         Create();
     }
 }

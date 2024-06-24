@@ -16,7 +16,7 @@ public class ResourceSpawner : Spawner<Resource>
 
     protected override Resource Spawn()
     {
-        Resource @object = Instantiate(Prefab[Random.Range(0, Prefab.Length)], transform.position, Quaternion.identity);
+        Resource @object = Instantiate(Prefab[Random.Range(0, Prefab.Length)], transform.position, Quaternion.identity, transform);
 
         return @object;
     }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent (typeof(Collider))]
@@ -19,10 +18,6 @@ public class Resource : MonoBehaviour
         _collider.enabled = false;
     }
 
-    public void BreakFree()
-    {
-        transform.SetParent(null);
+    public void BreakFree() => _collider.enabled = true;
 
-        _collider.enabled = true;
-    }
 }

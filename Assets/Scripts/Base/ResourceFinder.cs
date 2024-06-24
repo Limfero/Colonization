@@ -1,37 +1,21 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class ResourceFinder : MonoBehaviour
 {
     [SerializeField] private float _scanningRadius;
-    [SerializeField] private Finish _finish;
-
-    private List<Resource> _busyResources = new();
-
-    private void OnEnable()
-    {
-        _finish.ResourceCollected += RemoveResource;
-    }
-
-    private void OnDisable()
-    {
-        _finish.ResourceCollected -= RemoveResource;
-    }
+    [SerializeField] private ResourceBase _resourceBase;
 
     public bool TryFind(out Resource target)
     {
-        target = null;
-
-        IEnumerable<Resource> hits = Physics.OverlapSphere(transform.position, _scanningRadius, LayerMask.GetMask(nameof(Resource)))
+        target = Physics.OverlapSphere(transform.position, _scanningRadius, LayerMask.GetMask(nameof(Resource)))
             .Select(hit => hit.GetComponent<Resource>())
-            .Where(resource => _busyResources.Contains(resource) == false);
+            .Where(resource => _resourceBase.CheckResourceOnBusy(resource) == false)
+            .FirstOrDefault();
 
-        target = hits.FirstOrDefault();
-        _busyResources.Add(target);
+        if(target != null)
+            _resourceBase.AddBusyResource(target);
 
         return target != null;
     }
-
-    private void RemoveResource(Resource resource) => _busyResources.Remove(resource);
 }

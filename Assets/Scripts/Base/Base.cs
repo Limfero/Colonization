@@ -1,52 +1,25 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ResourceFinder), typeof(Sender))]
+[RequireComponent(typeof(ResourceFinder), typeof(Sender), typeof(UnitManager))]
 public class Base : MonoBehaviour
 {
     [SerializeField] private float _repeatRate;
-    [SerializeField] private int _maxUnit = 1;
 
-    private int _countUnit;
-    
     private ResourceFinder _finder;
     private Sender _sender;
-
-    public event Action<int> CountUnitChanged;
-
-    public int MaxUnit => _maxUnit;
-
-    public int CountUnit => _countUnit;
+    private UnitManager _unitManager;
 
     private void Awake()
     {
         _finder = GetComponent<ResourceFinder>();
         _sender = GetComponent<Sender>();
-
-        _countUnit = _maxUnit;
-        CountUnitChanged?.Invoke(_countUnit);
+        _unitManager = GetComponent<UnitManager>();
     }
 
     private void Start()
     {
         StartCoroutine(Countdown());
-    }
-
-    public void ReleseUnit() => CountUnitChanged?.Invoke(++_countUnit);
-
-    public void DeleteUnit()
-    {
-        _maxUnit--;
-        _countUnit--;
-        CountUnitChanged?.Invoke(_countUnit);
-    }
-
-    public void CreateUnit()
-    {
-        _maxUnit++;
-        _countUnit++;
-        CountUnitChanged?.Invoke(_countUnit);
     }
 
     private IEnumerator Countdown()
@@ -55,13 +28,21 @@ public class Base : MonoBehaviour
 
         while (enabled)
         {
-            if (_finder.TryFind(out Resource target) && _countUnit > 0)
-            {
-                _sender.SendUnit(target);
-                CountUnitChanged?.Invoke(--_countUnit);
-            }
+            TrySendUnitToTarget();
 
             yield return wait;
+        }
+    }
+
+    private void TrySendUnitToTarget()
+    {
+        if (_unitManager.TryGet(out Unit unit))
+        {
+            if (_finder.TryFind(out Resource target))
+            {
+                _unitManager.Activate(unit);
+                _sender.SendUnit(target, unit);
+            }
         }
     }
 }

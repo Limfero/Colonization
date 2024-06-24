@@ -1,16 +1,12 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Sender : MonoBehaviour
 {
-    [SerializeField] private Spawner<Unit> _spawner;
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private Transform _finishPoint;
 
-    public void SendUnit(Resource target)
+    public void SendUnit(Resource target, Unit unit)
     {
-        Unit unit = _spawner.GetObject(_spawnPoint.position);
-
         unit.Init(target.transform.position, _finishPoint.position);
     }
 
