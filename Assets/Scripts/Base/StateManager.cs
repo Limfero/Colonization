@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent (typeof(UnitManager), typeof(BaseCreator))]
 public class StateManager : MonoBehaviour
 {
-    [SerializeField] private FinishZone _finish;
+    [SerializeField] private BaseExitPoint _exit;
 
     private int _score;
     private int _costPerUnit = 3;
@@ -26,13 +26,13 @@ public class StateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _finish.UnitBack += OnFinish;
+        _exit.UnitBack += OnFinish;
         _creator.PositionDefined += SetStateToCreatingBase;
     }
 
     private void OnDisable()
     {
-        _finish.UnitBack -= OnFinish;
+        _exit.UnitBack -= OnFinish;
         _creator.PositionDefined -= SetStateToCreatingBase;
     }
 

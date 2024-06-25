@@ -14,7 +14,7 @@ public class UnitManager : MonoBehaviour
 
     private readonly int _unitInNewBase = 1;
 
-    public int MaxUnit => _maxUnit;
+    public int Total => _maxUnit;
     public int CountFreeUnit => _countFreeUnit;
 
     public event Action<int> CountUnitChanged;
@@ -24,11 +24,7 @@ public class UnitManager : MonoBehaviour
         _units = new List<Unit>();
 
         for (int i = 0; i < _unitInNewBase; i++)
-        {
-            Unit unit = Instantiate(_prefab);
-            _units.Add(unit);
-            unit.gameObject.SetActive(false);
-        }
+            AddNew();
 
         _maxUnit = _units.Count;
         _countFreeUnit = _unitInNewBase;
@@ -37,9 +33,9 @@ public class UnitManager : MonoBehaviour
 
     public bool TryGet(out Unit unit) => TryGetFreeUnit(out unit);
 
-    public void Activate(Unit unit) 
+    public void Activate(Unit unit)
     {
-        if(unit.gameObject.activeSelf == false)
+        if (unit.gameObject.activeSelf == false)
         {
             unit.gameObject.SetActive(true);
             unit.transform.position = _spawnPoint.position;
@@ -62,9 +58,7 @@ public class UnitManager : MonoBehaviour
 
     public void Create()
     {
-        Unit unit = Instantiate(_prefab);
-        _units.Add(unit);
-        unit.gameObject.SetActive(false);
+        AddNew();
 
         _maxUnit++;
         CountUnitChanged?.Invoke(++_countFreeUnit);
@@ -85,4 +79,12 @@ public class UnitManager : MonoBehaviour
 
         return unit != null;
     }
+
+    private void AddNew()
+    {
+        Unit unit = Instantiate(_prefab);
+        _units.Add(unit);
+        unit.gameObject.SetActive(false);
+    }
+
 }

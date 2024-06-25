@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class FinishZone : MonoBehaviour
+public class BaseExitPoint : MonoBehaviour
 {
     [SerializeField] private Spawner<Resource> _resourceSpawner;
     [SerializeField] private ResourceBase _resourceBase;

@@ -16,5 +16,5 @@ public class UnitView : MonoBehaviour
         _unitManager.CountUnitChanged -= Change;
     }
 
-    private void Change(int count) => _text.text = $"{count}/{_unitManager.MaxUnit}";
+    private void Change(int count) => _text.text = $"{count}/{_unitManager.Total}";
 }

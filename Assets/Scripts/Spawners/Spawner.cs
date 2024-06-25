@@ -13,7 +13,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : Component
     {
         _pool = new ObjectPool<T>(
             createFunc: () => Spawn(),
-            actionOnGet: (obj) => GetObject(obj),
+            actionOnGet: (obj) => ActivateObject(obj),
             actionOnRelease: (obj) => obj.gameObject.SetActive(false),
             actionOnDestroy: (obj) => Destroy(obj),
             collectionCheck: true,
@@ -38,7 +38,7 @@ public abstract class Spawner<T> : MonoBehaviour where T : Component
 
     protected abstract T Spawn();
 
-    private void GetObject(T obj)
+    private void ActivateObject(T obj)
     {
         obj.gameObject.SetActive(true);
     }
