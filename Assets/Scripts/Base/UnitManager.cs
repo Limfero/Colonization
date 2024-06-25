@@ -10,11 +10,11 @@ public class UnitManager : MonoBehaviour
 
     private List<Unit> _units;
     private int _countFreeUnit;
-    private int _maxUnit;
+    private int _total;
 
     private readonly int _unitInNewBase = 1;
 
-    public int Total => _maxUnit;
+    public int Total => _total;
     public int CountFreeUnit => _countFreeUnit;
 
     public event Action<int> CountUnitChanged;
@@ -26,7 +26,7 @@ public class UnitManager : MonoBehaviour
         for (int i = 0; i < _unitInNewBase; i++)
             AddNew();
 
-        _maxUnit = _units.Count;
+        _total = _units.Count;
         _countFreeUnit = _unitInNewBase;
         CountUnitChanged?.Invoke(_countFreeUnit);
     }
@@ -50,7 +50,7 @@ public class UnitManager : MonoBehaviour
 
         _units.Remove(unit);
 
-        _maxUnit--;
+        _total--;
         CountUnitChanged?.Invoke(--_countFreeUnit);
 
         return true;
@@ -60,7 +60,7 @@ public class UnitManager : MonoBehaviour
     {
         AddNew();
 
-        _maxUnit++;
+        _total++;
         CountUnitChanged?.Invoke(++_countFreeUnit);
     }
 
